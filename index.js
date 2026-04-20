@@ -21,7 +21,24 @@ const TEMP_TEST_USER = {
 	lastName: "Appleseed",
 	password: "test",
 };
+
+const accounts = [TEMP_TEST_USER];
 let loggedInTimerId;
+
+function normalizeIdentifier(value) {
+	return value.trim().toLowerCase();
+}
+
+function findAccountByLoginIdentifier(identifier) {
+	const normalizedIdentifier = normalizeIdentifier(identifier);
+
+	return accounts.find((account) => {
+		const accountUsername = normalizeIdentifier(account.username);
+		const accountEmail = normalizeIdentifier(account.email);
+
+		return normalizedIdentifier === accountUsername || normalizedIdentifier === accountEmail;
+	});
+}
 
 function showLoginState() {
 	if (loginCard) {
@@ -154,7 +171,68 @@ if (backToLoginButton) {
 if (createAccountForm) {
 	createAccountForm.addEventListener("submit", (event) => {
 		event.preventDefault();
-		window.alert("Account creation barebone is ready. Next step is wiring backend signup.");
+
+		const formData = new FormData(createAccountForm);
+		const firstName = String(formData.get("firstName") || "").trim();
+		const lastName = String(formData.get("lastName") || "").trim();
+		const email = String(formData.get("email") || "").trim();
+		const username = String(formData.get("username") || "").trim();
+		const password = String(formData.get("password") || "");
+		const gender = String(formData.get("gender") || "").trim();
+		const age = Number(formData.get("age"));
+		const region = String(formData.get("region") || "").trim();
+
+		if (!firstName || !lastName || !email || !username || !password || !gender || !region) {
+			window.alert("Please complete all fields.");
+			return;
+		}
+
+		if (!Number.isInteger(age) || age < 1 || age > 120) {
+			window.alert("Please enter a valid age between 1 and 120.");
+			return;
+		}
+
+		const usernameTaken = accounts.some(
+			(account) => normalizeIdentifier(account.username) === normalizeIdentifier(username),
+		);
+
+		if (usernameTaken) {
+			window.alert("That username is already taken.");
+			return;
+		}
+
+		const emailTaken = accounts.some(
+			(account) => normalizeIdentifier(account.email) === normalizeIdentifier(email),
+		);
+
+		if (emailTaken) {
+			window.alert("That email is already registered.");
+			return;
+		}
+
+		accounts.push({
+			firstName,
+			lastName,
+			email,
+			username,
+			password,
+			gender,
+			age,
+			region,
+		});
+
+		createAccountForm.reset();
+
+		if (usernameInput) {
+			usernameInput.value = username;
+		}
+
+		if (passwordInput) {
+			passwordInput.value = "";
+		}
+
+		showLoginState();
+		window.alert("Account created. Please sign in.");
 	});
 }
 
@@ -164,14 +242,14 @@ if (loginForm) {
 
 		const user = usernameInput ? usernameInput.value.trim() : "";
 		const password = passwordInput ? passwordInput.value : "";
-		const isValidIdentifier = user === TEMP_TEST_USER.username || user === TEMP_TEST_USER.email;
+		const account = findAccountByLoginIdentifier(user);
 
-		if (isValidIdentifier && password === TEMP_TEST_USER.password) {
-			showLoggedInState(TEMP_TEST_USER.firstName);
+		if (account && password === account.password) {
+			showLoggedInState(account.firstName);
 			return;
 		}
 
-		window.alert("Invalid login. For now, use test or test@test.com with password test.");
+		window.alert("Invalid login. Check your username/email and password.");
 	});
 }
 
