@@ -3,9 +3,125 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>API Full Stack Project</title>
+    <title>Meal Suggestion App Login</title>
+    <link rel="stylesheet" href="index.css" />
   </head>
   <body>
     <!-- You code goes here-->
+    <main class="page-shell">
+      <section class="login-card" aria-labelledby="greeting-title">
+        <header class="greeting-block">
+          <h1 id="greeting-title">Welcome,</h1>
+          <p id="service-line">Now Serving</p>
+        </header>
+
+        <p class="login-prompt">Please log in</p>
+
+        <form class="login-form" action="#" method="post">
+          <label for="username">Username or Email</label>
+          <input
+            id="username"
+            name="username"
+            type="text"
+            placeholder="Enter your username or email"
+            autocomplete="username"
+            required
+          />
+
+          <label for="password">Password</label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+            required
+          />
+
+          <button type="submit" class="btn btn-primary">Sign In</button>
+          <button type="button" class="btn btn-secondary" id="go-to-create-account">
+            Create a New Account
+          </button>
+        </form>
+
+        <footer class="site-footer">@chenoranges 2026</footer>
+      </section>
+
+      <section class="create-account-card" id="create-account-card" aria-labelledby="create-title" hidden>
+        <header class="greeting-block">
+          <h1 id="create-title">Welcome...</h1>
+        </header>
+
+        <p class="login-prompt">Create your account</p>
+
+        <form class="create-account-form" id="create-account-form" action="#" method="post">
+          <label for="first-name">First Name</label>
+          <input id="first-name" name="firstName" type="text" autocomplete="given-name" required />
+
+          <label for="last-name">Last Name</label>
+          <input id="last-name" name="lastName" type="text" autocomplete="family-name" required />
+
+          <label for="create-email">Email</label>
+          <input id="create-email" name="email" type="email" autocomplete="email" required />
+
+          <label for="create-username">Username</label>
+          <input id="create-username" name="username" type="text" autocomplete="username" required />
+
+          <label for="create-password">Password</label>
+          <input
+            id="create-password"
+            name="password"
+            type="password"
+            autocomplete="new-password"
+            required
+          />
+
+          <label for="gender">Gender (M/F/N)</label>
+          <select id="gender" name="gender" required>
+            <option value="" disabled selected>Select one</option>
+            <option value="M">M</option>
+            <option value="F">F</option>
+            <option value="N">N</option>
+          </select>
+
+          <label for="age">Age</label>
+          <input id="age" name="age" type="number" min="1" max="120" required />
+
+          <label for="region">Region/Country</label>
+          <select id="region" name="region" required>
+            <option value="" disabled selected>Select your region/country</option>
+            <option value="North America">North America</option>
+            <option value="South America">South America</option>
+            <option value="Europe">Europe</option>
+            <option value="Africa">Africa</option>
+            <option value="Asia">Asia</option>
+            <option value="Oceania">Oceania</option>
+          </select>
+
+          <button type="submit" class="btn btn-primary">Join Now</button>
+          <button type="button" class="btn btn-secondary" id="back-to-login">
+            Already Have an Account?
+          </button>
+        </form>
+
+        <footer class="site-footer">@chenoranges 2026</footer>
+      </section>
+
+      <section class="app-view" id="app-view" aria-labelledby="user-greeting" hidden>
+        <p class="current-time" id="current-time" aria-live="polite">--:--:--</p>
+        <p class="user-greeting" id="user-greeting">Good morning</p>
+        <p class="user-name" id="user-name">John</p>
+
+        <div class="action-grid" role="group" aria-label="Main actions">
+          <button type="button" class="btn app-btn">Something random</button>
+          <button type="button" class="btn app-btn">Likes</button>
+          <button type="button" class="btn app-btn">History</button>
+        </div>
+
+        <footer class="site-footer">@chenoranges 2026</footer>
+      </section>
+    </main>
+
+    <script src="index.js"></script>
   </body>
 </html>
