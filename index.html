@@ -9,7 +9,7 @@
   <body>
     <!-- You code goes here-->
     <main class="page-shell">
-      <section class="login-card" aria-labelledby="greeting-title">
+      <section class="login-card" aria-labelledby="greeting-title" hidden>
         <header class="greeting-block">
           <h1 id="greeting-title">Welcome,</h1>
           <p id="service-line">Now Serving</p>
@@ -43,6 +43,8 @@
             Create a New Account
           </button>
         </form>
+
+        <p id="login-error" class="form-error" role="alert" aria-live="assertive" hidden></p>
 
         <footer class="site-footer">@chenoranges 2026</footer>
       </section>
@@ -117,15 +119,36 @@
         <p class="user-name" id="user-name">John</p>
 
         <div class="action-grid" role="group" aria-label="Main actions">
-          <button type="button" class="btn app-btn">Something random</button>
-          <button type="button" class="btn app-btn">Likes</button>
-          <button type="button" class="btn app-btn">History</button>
+          <button type="button" class="btn app-btn" id="random-button">🔀 Something random</button>
+          <button type="button" class="btn app-btn" id="likes-button">❤️Likes</button>
+          <button type="button" class="btn app-btn" id="history-button">History</button>
         </div>
+
+        <section class="food-panel" id="food-panel" aria-live="polite" hidden>
+          <div class="food-panel-head">
+            <h2 class="food-panel-title" id="food-panel-title">Result</h2>
+            <button type="button" class="btn btn-secondary" id="food-panel-close" aria-label="Close panel">
+              ×
+            </button>
+          </div>
+          <p class="food-panel-content" id="food-panel-content">No selection yet.</p>
+          <button
+            type="button"
+            class="btn btn-primary"
+            id="food-like-toggle"
+            aria-pressed="false"
+            hidden
+          >
+            ♡ Save to likes
+          </button>
+        </section>
+
+        <button type="button" class="logout-btn" id="logout-button">Logout</button>
 
         <footer class="site-footer">@chenoranges 2026</footer>
       </section>
     </main>
 
-    <script src="index.js"></script>
+    <script type="module" src="index.js"></script>
   </body>
 </html>
