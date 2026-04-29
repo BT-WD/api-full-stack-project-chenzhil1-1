@@ -359,11 +359,37 @@ async function saveUserToFirestore(user, profileData) {
 }
 
 async function addHistoryEntry(user, meal) {
-  await addDoc(collection(db, USERS_COLLECTION, user.uid, USER_HISTORY_SUBCOLLECTION), {
+  const historyCollectionRef = collection(db, USERS_COLLECTION, user.uid, USER_HISTORY_SUBCOLLECTION);
+
+  // If this meal already exists in history, remove old entries so the new one becomes the single latest record.
+  const existingSnapshot = await getDocs(historyCollectionRef);
+  const duplicateDeletes = [];
+  existingSnapshot.forEach((docSnapshot) => {
+    const data = docSnapshot.data();
+    if (data && data.mealId === meal.id) {
+      duplicateDeletes.push(deleteDoc(docSnapshot.ref));
+    }
+  });
+  if (duplicateDeletes.length) {
+    await Promise.all(duplicateDeletes);
+  }
+
+  await addDoc(historyCollectionRef, {
     mealId: meal.id,
     mealName: meal.name,
     createdAt: serverTimestamp(),
   });
+
+  // Keep only the 20 most recent history entries.
+  const orderedHistorySnapshot = await getDocs(
+    query(historyCollectionRef, orderBy("createdAt", "desc")),
+  );
+  const overflowDeletes = orderedHistorySnapshot.docs
+    .slice(20)
+    .map((docSnapshot) => deleteDoc(docSnapshot.ref));
+  if (overflowDeletes.length) {
+    await Promise.all(overflowDeletes);
+  }
 }
 
 async function addLikedMeal(user, meal) {
